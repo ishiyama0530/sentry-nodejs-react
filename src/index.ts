@@ -3,7 +3,9 @@ import * as Sentry from "@sentry/node";
 import httpContext from "express-http-context";
 
 Sentry.init({
-  dsn: "https://f8b3c60499aaa13388753f7123b4dab8@o4507418923958272.ingest.us.sentry.io/4507419031896064",
+  dsn: "your project dsn",
+  // debug: true, #Integrationの内訳などを確認したいときなど
+  // environment: process.env.NODE_ENV #そもそも環境はdsn単位で別にしたい
 });
 
 const app: Application = express();
@@ -39,11 +41,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     s.setTag("app-traceId", httpContext.get("traceId"));
     return s;
   });
-
-  // エラーをコンソールにログ出力（開発中のみ）
-  if (app.get("env") === "development") {
-    console.error(err);
-  }
 });
 
 try {
